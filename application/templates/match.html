@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block style_block %}
+	{{ super() }}
+    <link href="/static/css/jquery.handsontable.full.css" rel="stylesheet" />
+{% endblock %}
+
+{% block head_script %}
+    {{ super() }}
+	<script src="/static/js/lib/jquery.handsontable.full.js"></script>
+{% endblock %}
+
+{% block content %}
+	<div class="handsOnContainer">
+		<div id="grid" class="handsontable"></div>
+		<button name="match" class="btn btn-large btn-primary" style="margin-top: 10px;">Match</button>
+	</div>
+{% endblock content %}
+
+{% block tail_script %}
+	<script>
+	$(document).ready(function () {
+		var $container = $("#grid");
+		var $parent = $container.parent();
+	
+		var data = {{ exampleOutput|tojson|safe }};
+
+		$('#grid').handsontable({
+			data: data,
+			minSpareRows: 1,
+			colHeaders: true,
+			contextMenu: true
+		});
+
+		var handsontable = $container.data('handsontable');
+		
+		$parent.find('button[name=match]').click(function () {
+			$.ajax({
+				url: "{{ url_for('match') }}",
+				data: JSON.stringify({"data": handsontable.getData()}), //returns all cells' data
+				dataType: 'json',
+				contentType: "application/json; charset=utf-8", // won't work without specifying content type
+				type: 'POST',
+				success: function (res) {
+				  handsontable.loadData(res.data);
+				  console.log(res.data);
+				},
+				error: function (xhr, textStatus, errorThrown) {
+				  console.log(xhr.responseText);
+				  console.log(handsontable.getData());
+				}
+			});
+		});
+	});
+	</script>
+{% endblock tail_script %}

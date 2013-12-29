@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+{% set bootstrap_version = '2.3.1' %}
+{% set modernizer_version = '2.6.2' %}
+{% set jquery_version = '1.9.1' %}
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1" />
+    <title>{% block title%}Two Column Match{% endblock %}</title>
+    <link href="/static/css/bootstrap.min.css" rel="stylesheet" />
+    <link rel="stylesheet" href="/static/css/font-awesome.min.css">
+    <link href="/static/css/main.css" rel="stylesheet" />
+    <link rel="shortcut icon" href="/static/img/favicon.ico" />
+    {% block style_block %}{# page-specific CSS #}{% endblock %}
+	 <script src="https://ajax.googleapis.com/ajax/libs/jquery/{{ jquery_version }}/jquery.min.js"></script>
+    {% block head_script %}{# defer-incapable JS block #}{% endblock %}
+</head>
+<body>
+    <div id="header" class="container">
+        <h1>Two Column Match</h1>
+		<p>This tool is for finding the closest match from the second column and matching it to the first column.</p>
+    </div>
+    <div class="container" id="maincontent">
+        <div id="body_content">
+            {% block content %}{# main content area #}{% endblock %}
+        </div>
+    </div><!-- /container -->
+    <footer>
+        <div id="footer" class="container">
+            {% block footer %}{% endblock %}
+        </div><!-- /footer -->
+    </footer>
+    <script src="/static/js/lib/bootstrap.min.js"></script>
+    <script src="/static/js/main.js"></script>
+    {% block tail_script %}{# defer-capable JS block #}{% endblock %}
+    {{ profiler_includes|safe }}
+</body>
+</html>
